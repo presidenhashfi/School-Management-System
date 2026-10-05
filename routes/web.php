@@ -8,6 +8,7 @@ use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\PasswordController;
 
 // Route untuk Guest (Belum Login)
@@ -28,6 +29,7 @@ Route::middleware('auth')->group(function () {
     // Manajemen akun (Hanya Admin)
     Route::middleware('role:admin')->group(function () {
         Route::resource('users', UserController::class)->except(['show']);
+        Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
     });
 
     // ==========================================

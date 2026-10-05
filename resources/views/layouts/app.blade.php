@@ -24,6 +24,7 @@
     if ($authUser->role === 'admin') {
         $navItems[] = ['route' => 'teachers.index', 'match' => 'teachers.*', 'icon' => 'bi-person-workspace', 'label' => 'Guru'];
         $navItems[] = ['route' => 'users.index', 'match' => 'users.*', 'icon' => 'bi-person-gear', 'label' => 'Akun'];
+        $navItems[] = ['route' => 'activity-logs.index', 'match' => 'activity-logs.*', 'icon' => 'bi-clock-history', 'label' => 'Log'];
     }
     $initials = strtoupper(substr($authUser->username, 0, 2));
 @endphp
