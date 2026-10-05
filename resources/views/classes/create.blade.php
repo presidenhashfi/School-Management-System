@@ -10,19 +10,6 @@
 
 @section('content')
 @include('_partials.page-styles')
-<style>
-    .sf-sidebar-card { background:linear-gradient(160deg,#2563eb 0%,#4f46e5 55%,#7c3aed 100%); box-shadow:0 12px 40px rgba(37,99,235,.4); }
-    .sf-sec-num { background:linear-gradient(135deg,#3b82f6,#6366f1); box-shadow:0 3px 8px rgba(59,130,246,.4); }
-    .sf-field label i { color:#3b82f6; }
-    .sf-field input:focus, .sf-field select:focus { border-color:#3b82f6; box-shadow:0 0 0 4px rgba(59,130,246,.1); }
-    .sf-field::after { background:linear-gradient(90deg,#3b82f6,#6366f1); }
-    .btn-sf-submit { background:linear-gradient(135deg,#2563eb,#4f46e5); box-shadow:0 6px 20px rgba(37,99,235,.4); color:white; }
-    .btn-sf-submit:hover { background:linear-gradient(135deg,#1d4ed8,#4338ca); box-shadow:0 10px 30px rgba(37,99,235,.5); color:white; }
-    .sf-tips-title { color:#2563eb; }
-    .sf-tips-card li i { color:#60a5fa; }
-    .sf-footer { background:#f0f9ff; border-color:#bae6fd; }
-    .sf-field select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%232563eb' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 1rem center; }
-</style>
 
 <div class="sf-outer">
     <div class="sf-sidebar">

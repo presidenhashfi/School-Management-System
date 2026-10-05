@@ -10,18 +10,6 @@
 
 @section('content')
 @include('_partials.page-styles')
-<style>
-    .sf-sidebar-card { background:linear-gradient(160deg,#dc2626 0%,#ea580c 55%,#f59e0b 100%); box-shadow:0 12px 40px rgba(220,38,38,.4); }
-    .sf-sec-num { background:linear-gradient(135deg,#ef4444,#f97316); box-shadow:0 3px 8px rgba(239,68,68,.4); }
-    .sf-field label i { color:#ef4444; }
-    .sf-field input:focus, .sf-field select:focus { border-color:#ef4444; box-shadow:0 0 0 4px rgba(239,68,68,.1); }
-    .sf-field::after { background:linear-gradient(90deg,#ef4444,#f97316); }
-    .btn-sf-submit { background:linear-gradient(135deg,#dc2626,#ea580c); box-shadow:0 6px 20px rgba(220,38,38,.4); color:white; }
-    .btn-sf-submit:hover { background:linear-gradient(135deg,#b91c1c,#c2410c); box-shadow:0 10px 30px rgba(220,38,38,.5); color:white; }
-    .sf-tips-title { color:#dc2626; }
-    .sf-tips-card li i { color:#f87171; }
-    .sf-footer { background:#fff5f5; border-color:#fecaca; }
-</style>
 
 <div class="sf-outer">
     <div class="sf-sidebar">

@@ -4,104 +4,87 @@
 
 @section('breadcrumbs')
     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Classes</li>
+    <li class="breadcrumb-item active" aria-current="page">Kelas</li>
 @endsection
 
 @section('content')
-@include('_partials.page-styles')
+@php
+    $isAdmin = auth()->user()->role === 'admin';
+    $totalKelas = $classes->count();
+@endphp
 
-
-{{-- HERO --}}
-<div style="background:linear-gradient(135deg,#2563eb 0%,#4f46e5 50%,#7c3aed 100%);border-radius:24px;padding:2.25rem 2.75rem;margin-bottom:2rem;position:relative;overflow:hidden;color:white;box-shadow:0 10px 40px rgba(37,99,235,.38);">
-    <div class="hero-blob1"></div><div class="hero-blob2"></div><div class="hero-blob3"></div>
-    <div style="position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;">
-        <div>
-            <div class="hero-icon-wrap"><i class="bi bi-building-fill"></i></div>
-            <h2 style="color:white;font-size:1.75rem;font-weight:800;margin:0 0 0.3rem;letter-spacing:-0.5px;">Data Kelas</h2>
-            <p style="color:rgba(255,255,255,.75);font-size:.88rem;margin:0 0 1.25rem;">Kelola seluruh kelas dan wali kelas</p>
-            @php $totalKelas = $classes->count(); @endphp
-            <div class="hero-stats">
-                <div class="hero-stat"><span class="s-num">{{ $totalKelas }}</span><span class="s-lbl">Total Kelas</span></div>
-            </div>
-        </div>
-        @if(auth()->user()->role === 'admin')
-            <a href="{{ route('classes.create') }}" class="btn-hero-add">
-                <i class="bi bi-plus-circle-fill"></i> Tambah Kelas
-            </a>
-        @endif
+<div class="ph">
+    <div>
+        <div class="ph-eyebrow">Akademik</div>
+        <h1 class="ph-title">Data Kelas</h1>
+        <p class="ph-sub">Kelola seluruh kelas dan wali kelas.</p>
     </div>
+    @if($isAdmin)
+        <a href="{{ route('classes.create') }}" class="btn-ui btn-ui-primary"><i class="bi bi-plus-lg" aria-hidden="true"></i> Tambah Kelas</a>
+    @endif
 </div>
 
-{{-- TABLE CARD --}}
-<div class="pg-card">
-    <div class="pg-toolbar">
-        <div class="d-flex align-items-center gap-2">
-            <span class="pg-toolbar-title">Daftar Kelas</span>
-            <span class="pg-count-pill">{{ $totalKelas }} kelas</span>
-        </div>
+<section class="card-ui">
+    <div class="card-ui-head">
+        <h2 class="card-ui-title">Daftar Kelas <span class="pill">{{ $totalKelas }}</span></h2>
     </div>
-    <div class="table-responsive">
-        <table class="table pg-table table-hover mb-0">
+    <div class="tbl-wrap">
+        <table class="tbl tbl-stack">
             <thead>
                 <tr>
-                    <th style="width:60px;">#</th>
+                    <th>#</th>
                     <th>Nama Kelas</th>
                     <th>Wali Kelas</th>
                     <th>Tahun Ajaran</th>
-                    @if(auth()->user()->role === 'admin')<th class="text-center" style="width:110px;">Aksi</th>@endif
+                    @if($isAdmin)<th class="t-right">Aksi</th>@endif
                 </tr>
             </thead>
             <tbody>
                 @forelse($classes as $index => $class)
-                    <tr style="animation-delay:{{ $index * 0.05 }}s;">
-                        <td><span class="row-chip">{{ $index + 1 }}</span></td>
-                        <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="item-avatar" style="background:linear-gradient(135deg,#3b82f6,#6366f1);">
-                                    <i class="bi bi-building" style="font-size:.85rem;"></i>
-                                </div>
-                                <span style="font-weight:700;color:#0f172a;">{{ $class->class_name }}</span>
+                    <tr>
+                        <td class="num">{{ $index + 1 }}</td>
+                        <td class="cell-primary" data-label="Kelas">
+                            <div class="cell-main">
+                                <div class="avatar" aria-hidden="true"><i class="bi bi-building"></i></div>
+                                <span class="cell-name">{{ $class->class_name }}</span>
                             </div>
                         </td>
-                        <td>
+                        <td data-label="Wali Kelas">
                             @if($class->homeroom)
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="teacher-mini-avatar">{{ strtoupper(substr($class->homeroom, 0, 2)) }}</div>
-                                    <span style="font-size:.875rem;font-weight:500;color:#374151;">{{ $class->homeroom }}</span>
+                                <div class="cell-main">
+                                    <div class="avatar" style="width:26px;height:26px;font-size:.6rem" aria-hidden="true">{{ strtoupper(substr($class->homeroom, 0, 2)) }}</div>
+                                    <span>{{ $class->homeroom }}</span>
                                 </div>
                             @else
-                                <span class="empty-val">— belum ada wali kelas —</span>
+                                <span class="muted-val">Belum ada wali kelas</span>
                             @endif
                         </td>
-                        <td>
-                            <span class="year-badge">
-                                <i class="bi bi-calendar3" style="font-size:.65rem;"></i>
-                                {{ $class->academic_year }}
-                            </span>
-                        </td>
-                        @if(auth()->user()->role === 'admin')
-                            <td>
+                        <td data-label="Tahun Ajaran"><span class="tag tag-mono">{{ $class->academic_year }}</span></td>
+                        @if($isAdmin)
+                            <td class="cell-actions t-right">
                                 <div class="act-wrap">
-                                    <a href="{{ route('classes.edit', $class->class_id) }}" class="act-btn edit" data-tip="Edit"><i class="bi bi-pencil-fill"></i></a>
-                                    <form action="{{ route('classes.destroy', $class->class_id) }}" method="POST" class="d-inline">
+                                    <a href="{{ route('classes.edit', $class->class_id) }}" class="act-btn" title="Edit" aria-label="Edit {{ $class->class_name }}"><i class="bi bi-pencil" aria-hidden="true"></i></a>
+                                    <form action="{{ route('classes.destroy', $class->class_id) }}" method="POST">
                                         @csrf @method('DELETE')
-                                        <button class="act-btn del" data-tip="Hapus" onclick="return confirm('Yakin hapus kelas {{ $class->class_name }}?')"><i class="bi bi-trash-fill"></i></button>
+                                        <button class="act-btn del" title="Hapus" aria-label="Hapus {{ $class->class_name }}" onclick="return confirm('Yakin hapus kelas {{ $class->class_name }}?')"><i class="bi bi-trash3" aria-hidden="true"></i></button>
                                     </form>
                                 </div>
                             </td>
                         @endif
                     </tr>
                 @empty
-                    <tr><td colspan="{{ auth()->user()->role === 'admin' ? 5 : 4 }}" class="p-0">
-                        <div class="empty-state">
-                            <div class="empty-icon"><i class="bi bi-building"></i></div>
-                            <h6>Belum ada kelas terdaftar</h6>
-                            <p>Tambahkan kelas pertama untuk mulai mengelola data akademik</p>
-                        </div>
-                    </td></tr>
+                    <tr>
+                        <td colspan="{{ $isAdmin ? 5 : 4 }}" class="empty-cell p-0">
+                            <div class="empty">
+                                <div class="empty-icon"><i class="bi bi-building" aria-hidden="true"></i></div>
+                                <h3>Belum ada kelas terdaftar</h3>
+                                <p>Tambahkan kelas pertama untuk mulai mengelola data akademik.</p>
+                            </div>
+                        </td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
-</div>
+</section>
 @endsection

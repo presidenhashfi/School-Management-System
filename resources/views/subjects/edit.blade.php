@@ -10,21 +10,6 @@
 
 @section('content')
 @include('_partials.page-styles')
-<style>
-    .sf-sidebar-card { background:linear-gradient(160deg,#d97706 0%,#ea580c 55%,#dc2626 100%); box-shadow:0 12px 40px rgba(234,88,12,.4); }
-    .sf-sec-num { background:linear-gradient(135deg,#f59e0b,#f97316); box-shadow:0 3px 8px rgba(245,158,11,.4); }
-    .sf-field label i { color:#f97316; }
-    .sf-field input:focus, .sf-field select:focus { border-color:#f97316; box-shadow:0 0 0 4px rgba(249,115,22,.1); }
-    .sf-field::after { background:linear-gradient(90deg,#f59e0b,#f97316); }
-    .btn-sf-update { background:linear-gradient(135deg,#f59e0b,#f97316); box-shadow:0 6px 20px rgba(245,158,11,.4); color:white; }
-    .btn-sf-update:hover { background:linear-gradient(135deg,#d97706,#ea580c); box-shadow:0 10px 30px rgba(245,158,11,.5); color:white; }
-    .sf-tips-title { color:#ea580c; }
-    .sf-tips-card li i { color:#fb923c; }
-    .sf-footer { background:#fffbf5; border-color:#fef3c7; }
-    .sf-form-banner { background:linear-gradient(135deg,#fff7ed,#ffedd5); border-color:#fed7aa; }
-    .sf-form-banner i, .sf-form-banner span { color:#92400e; }
-    .sf-edit-badge { background:linear-gradient(135deg,#fed7aa,#fdba74); color:#9a3412; border:1px solid #fdba74; }
-</style>
 
 <div class="sf-outer">
     <div class="sf-sidebar">

@@ -3,318 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login — School Management System</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Bootstrap Icons -->
+    <meta name="description" content="Masuk ke School Management System untuk mengelola data siswa, guru, kelas, dan mata pelajaran.">
+    <title>Masuk — School Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="{{ asset('css/ui.css') }}?v={{ @filemtime(public_path('css/ui.css')) }}" rel="stylesheet">
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { overflow: auto; }
+        .auth { min-height: 100vh; min-height: 100dvh; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            background: #0f172a;
-            overflow: hidden;
+        /* Brand side */
+        .auth-aside {
+            position: relative; overflow: hidden; background: #0c1f1d; color: #d1e7e3;
+            display: flex; flex-direction: column; justify-content: space-between; padding: 2.5rem 3rem;
         }
+        .auth-aside::before {
+            content: ''; position: absolute; inset: 0; opacity: .5;
+            background-image: radial-gradient(rgba(255,255,255,.13) 1px, transparent 1px);
+            background-size: 22px 22px;
+            -webkit-mask-image: radial-gradient(ellipse at 20% 80%, #000, transparent 70%);
+            mask-image: radial-gradient(ellipse at 20% 80%, #000, transparent 70%);
+        }
+        .auth-aside::after {
+            content: ''; position: absolute; width: 420px; height: 420px; right: -160px; top: -160px; border-radius: 50%;
+            border: 1px solid rgba(94, 234, 212, .18); box-shadow: 0 0 0 60px rgba(94,234,212,.04), 0 0 0 120px rgba(94,234,212,.025);
+        }
+        .auth-aside > * { position: relative; z-index: 1; }
+        .auth-aside .brand, .auth-aside .brand:hover { color: #fff; }
+        .auth-aside .brand-mark { background: #14b8a6; color: #04201d; }
+        .auth-hero h1 { font-size: clamp(2rem, 3.2vw, 2.9rem); font-weight: 800; line-height: 1.1; letter-spacing: -.035em; color: #fff; margin: 0 0 1rem; max-width: 14ch; }
+        .auth-hero p { color: #8fb5af; font-size: 1rem; max-width: 38ch; margin: 0; }
+        .auth-points { list-style: none; margin: 0; padding: 0; display: grid; gap: .65rem; }
+        .auth-points li { display: flex; align-items: center; gap: .65rem; font-size: .86rem; color: #a8cbc5; }
+        .auth-points i { color: #5eead4; font-size: .95rem; }
 
-        /* ====== LEFT PANEL ====== */
-        .left-panel {
-            flex: 1;
-            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4c1d95 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem;
-            position: relative;
-            overflow: hidden;
+        /* Form side */
+        .auth-main { display: flex; align-items: center; justify-content: center; padding: 2rem 1.5rem; background: var(--surface); }
+        .auth-box { width: 100%; max-width: 380px; animation: rise .5s var(--ease) both; }
+        .auth-box .brand { display: none; margin-bottom: 2rem; }
+        .auth-box h2 { font-size: 1.65rem; font-weight: 800; margin: 0 0 .4rem; }
+        .auth-box .lead { color: var(--muted); margin: 0 0 2rem; font-size: .9rem; }
+        .field { margin-bottom: 1.1rem; }
+        .field label { display: block; font-size: .78rem; font-weight: 600; color: var(--ink-2); margin-bottom: .4rem; }
+        .input-ico { position: relative; }
+        .input-ico > i.lead-ico { position: absolute; left: .9rem; top: 50%; transform: translateY(-50%); color: var(--faint); pointer-events: none; }
+        .input-ico input {
+            width: 100%; min-height: 46px; padding: .65rem 2.6rem .65rem 2.6rem; font: inherit; font-size: .92rem; color: var(--ink);
+            background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--r-sm); outline: none;
+            transition: border-color .15s, box-shadow .15s;
         }
+        .input-ico input:hover { border-color: var(--faint); }
+        .input-ico input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-ring); }
+        .input-ico input.is-invalid { border-color: var(--danger); }
+        .reveal { position: absolute; right: .35rem; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border: 0; background: none; color: var(--muted); border-radius: 8px; cursor: pointer; display: grid; place-items: center; }
+        .reveal:hover { color: var(--ink); background: #f5f5f4; }
+        .err { display: flex; align-items: center; gap: .35rem; color: var(--danger); font-size: .78rem; font-weight: 600; margin-top: .4rem; }
+        .btn-login { width: 100%; min-height: 48px; margin-top: .5rem; background: var(--ink); color: #fff; border: 0; border-radius: var(--r-sm); font: inherit; font-weight: 700; font-size: .92rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: .5rem; transition: background .15s, transform .15s; }
+        .btn-login:hover { background: #292524; }
+        .btn-login:active { transform: scale(.99); }
+        .btn-login:disabled { opacity: .7; cursor: wait; }
+        .foot { margin-top: 2.5rem; text-align: center; font-size: .74rem; color: var(--faint); }
 
-        .left-panel::before {
-            content: '';
-            position: absolute;
-            width: 400px; height: 400px;
-            background: rgba(99, 102, 241, 0.15);
-            border-radius: 50%;
-            top: -100px; left: -100px;
-            animation: pulse 6s ease-in-out infinite;
+        @media (max-width: 860px) {
+            .auth { grid-template-columns: minmax(0, 1fr); }
+            .auth-aside { display: none; }
+            .auth-main { background: var(--bg); align-items: flex-start; padding-top: 10vh; }
+            .auth-box { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 1.75rem 1.5rem; box-shadow: var(--shadow-md); }
+            .auth-box .brand { display: flex; }
         }
-
-        .left-panel::after {
-            content: '';
-            position: absolute;
-            width: 300px; height: 300px;
-            background: rgba(139, 92, 246, 0.12);
-            border-radius: 50%;
-            bottom: -80px; right: -80px;
-            animation: pulse 8s ease-in-out infinite reverse;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.6; }
-            50% { transform: scale(1.15); opacity: 1; }
-        }
-
-        .brand-logo {
-            width: 72px; height: 72px;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            border-radius: 20px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; color: white;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4);
-            position: relative; z-index: 1;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        .left-panel h1 {
-            color: white;
-            font-size: 2rem;
-            font-weight: 800;
-            text-align: center;
-            position: relative; z-index: 1;
-            letter-spacing: -0.5px;
-            margin-bottom: 0.75rem;
-        }
-
-        .left-panel p {
-            color: rgba(255,255,255,0.6);
-            text-align: center;
-            font-size: 0.9rem;
-            position: relative; z-index: 1;
-            max-width: 280px;
-            line-height: 1.6;
-        }
-
-        .feature-list {
-            list-style: none;
-            margin-top: 2.5rem;
-            position: relative; z-index: 1;
-        }
-
-        .feature-list li {
-            color: rgba(255,255,255,0.75);
-            font-size: 0.83rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            margin-bottom: 0.75rem;
-            font-weight: 500;
-        }
-
-        .feature-list li .check {
-            width: 22px; height: 22px;
-            background: rgba(99, 102, 241, 0.3);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.7rem;
-            color: #a5b4fc;
-            flex-shrink: 0;
-        }
-
-        /* ====== RIGHT PANEL (LOGIN FORM) ====== */
-        .right-panel {
-            width: 460px;
-            background: #f8fafc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2.5rem;
-        }
-
-        .login-box {
-            width: 100%;
-            max-width: 380px;
-        }
-
-        .login-box .welcome {
-            margin-bottom: 2rem;
-        }
-
-        .login-box .welcome h2 {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: #0f172a;
-            margin-bottom: 0.4rem;
-        }
-
-        .login-box .welcome p {
-            font-size: 0.875rem;
-            color: #64748b;
-        }
-
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 0.4rem;
-            letter-spacing: 0.2px;
-        }
-
-        .input-wrap {
-            position: relative;
-        }
-
-        .input-wrap .input-icon {
-            position: absolute;
-            left: 0.85rem; top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
-            font-size: 0.95rem;
-            pointer-events: none;
-        }
-
-        .input-wrap input {
-            width: 100%;
-            padding: 0.7rem 0.85rem 0.7rem 2.5rem;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 10px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.875rem;
-            color: #1e293b;
-            background: white;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            outline: none;
-        }
-
-        .input-wrap input:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
-        }
-
-        .error-msg {
-            color: #ef4444;
-            font-size: 0.75rem;
-            margin-top: 0.3rem;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .btn-login {
-            width: 100%;
-            padding: 0.75rem;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
-            margin-top: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .btn-login:hover {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.45);
-        }
-
-        .login-footer {
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 0.75rem;
-            color: #94a3b8;
-        }
-
-        @media (max-width: 768px) {
-            .left-panel { display: none; }
-            .right-panel { width: 100%; }
-        }
+        @media (max-width: 400px) { .auth-main { padding-left: .75rem; padding-right: .75rem; } }
     </style>
 </head>
 <body>
+<div class="auth">
+    <aside class="auth-aside" aria-hidden="false">
+        <a class="brand" href="/"><span class="brand-mark"><i class="bi bi-mortarboard" aria-hidden="true"></i></span><span class="brand-name">SchoolMS</span></a>
 
-    <!-- LEFT PANEL -->
-    <div class="left-panel">
-        <div class="brand-logo">
-            <i class="bi bi-mortarboard-fill"></i>
+        <div class="auth-hero">
+            <h1>Kelola sekolah, tanpa ribet.</h1>
+            <p>Satu tempat untuk data siswa, guru, kelas, dan mata pelajaran.</p>
         </div>
-        <h1>School Management System</h1>
-        <p>Platform manajemen sekolah terpadu yang modern dan efisien</p>
 
-        <ul class="feature-list">
-            <li>
-                <span class="check"><i class="bi bi-check"></i></span>
-                Manajemen Data Siswa & Guru
-            </li>
-            <li>
-                <span class="check"><i class="bi bi-check"></i></span>
-                Manajemen Kelas & Mata Pelajaran
-            </li>
-            <li>
-                <span class="check"><i class="bi bi-check"></i></span>
-                Sistem Role-Based Access Control
-            </li>
-            <li>
-                <span class="check"><i class="bi bi-check"></i></span>
-                Dashboard Ringkasan Statistik
-            </li>
+        <ul class="auth-points">
+            <li><i class="bi bi-check2-circle" aria-hidden="true"></i> Data siswa &amp; guru terpusat</li>
+            <li><i class="bi bi-check2-circle" aria-hidden="true"></i> Kelas dan mata pelajaran terstruktur</li>
+            <li><i class="bi bi-check2-circle" aria-hidden="true"></i> Akses berdasarkan peran pengguna</li>
         </ul>
-    </div>
+    </aside>
 
-    <!-- RIGHT PANEL -->
-    <div class="right-panel">
-        <div class="login-box">
-            <div class="welcome">
-                <h2>Selamat datang 👋</h2>
-                <p>Masukkan kredensial Anda untuk mengakses sistem</p>
-            </div>
+    <main class="auth-main">
+        <div class="auth-box">
+            <a class="brand" href="/"><span class="brand-mark"><i class="bi bi-mortarboard" aria-hidden="true"></i></span><span class="brand-name">SchoolMS</span></a>
 
-            <form action="/login" method="POST">
+            <h1 class="visually-hidden">Masuk</h1>
+            <h2>Selamat datang</h2>
+            <p class="lead">Masuk dengan akun Anda untuk melanjutkan.</p>
+
+            <form action="/login" method="POST" id="loginForm" novalidate>
                 @csrf
-
-                <div class="form-group">
-                    <label for="email">Alamat Email <span style="color:#ef4444;">*</span></label>
-                    <div class="input-wrap">
-                        <i class="bi bi-envelope input-icon"></i>
-                        <input type="email" name="email" id="email"
-                               placeholder="contoh@school.com"
-                               value="{{ old('email') }}" autofocus required>
+                <div class="field">
+                    <label for="email">Email</label>
+                    <div class="input-ico">
+                        <i class="bi bi-envelope lead-ico" aria-hidden="true"></i>
+                        <input type="email" name="email" id="email" placeholder="nama@sekolah.com" autocomplete="username"
+                               value="{{ old('email') }}" class="@error('email') is-invalid @enderror" autofocus required>
                     </div>
                     @error('email')
-                        <div class="error-msg"><i class="bi bi-exclamation-circle"></i> {{ $message }}</div>
+                        <div class="err" role="alert"><i class="bi bi-exclamation-circle" aria-hidden="true"></i> {{ $message }}</div>
                     @enderror
                 </div>
 
-                <div class="form-group">
-                    <label for="password">Password <span style="color:#ef4444;">*</span></label>
-                    <div class="input-wrap">
-                        <i class="bi bi-lock input-icon"></i>
-                        <input type="password" name="password" id="password"
-                               placeholder="Masukkan password Anda..." required>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <div class="input-ico">
+                        <i class="bi bi-lock lead-ico" aria-hidden="true"></i>
+                        <input type="password" name="password" id="password" placeholder="Masukkan password" autocomplete="current-password" required>
+                        <button type="button" class="reveal" id="reveal" aria-label="Tampilkan password"><i class="bi bi-eye" aria-hidden="true"></i></button>
                     </div>
                 </div>
 
-                <button type="submit" class="btn-login">
-                    <i class="bi bi-box-arrow-in-right"></i> Masuk ke Sistem
+                <button type="submit" class="btn-login" id="loginBtn">
+                    <span>Masuk</span> <i class="bi bi-arrow-right" aria-hidden="true"></i>
                 </button>
             </form>
 
-            <div class="login-footer">
-                &copy; {{ date('Y') }} School Management System. All rights reserved.
-            </div>
+            <p class="foot">&copy; {{ date('Y') }} School Management System</p>
         </div>
-    </div>
-
+    </main>
+</div>
+<script>
+    var pw = document.getElementById('password'), rv = document.getElementById('reveal');
+    rv.addEventListener('click', function () {
+        var show = pw.type === 'password';
+        pw.type = show ? 'text' : 'password';
+        rv.setAttribute('aria-label', show ? 'Sembunyikan password' : 'Tampilkan password');
+        rv.firstElementChild.className = 'bi ' + (show ? 'bi-eye-slash' : 'bi-eye');
+    });
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+        if (!this.checkValidity()) { return; }
+        var b = document.getElementById('loginBtn');
+        b.disabled = true;
+        b.innerHTML = '<i class="bi bi-arrow-repeat" style="animation:spin 1s linear infinite" aria-hidden="true"></i> Memproses...';
+    });
+</script>
 </body>
 </html>
