@@ -20,7 +20,7 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials + ['archived' => 0])) {
             $request->session()->regenerate();
             
             // Redirect ke dashboard setelah berhasil login

@@ -7,6 +7,8 @@ use App\Http\Controllers\StudentController; // Tambahkan ini
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PasswordController;
 
 // Route untuk Guest (Belum Login)
 Route::middleware('guest')->group(function () {
@@ -18,6 +20,15 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Ganti password (semua user yang login)
+    Route::get('/password', [PasswordController::class, 'edit'])->name('password.edit');
+    Route::put('/password', [PasswordController::class, 'update'])->name('password.update');
+
+    // Manajemen akun (Hanya Admin)
+    Route::middleware('role:admin')->group(function () {
+        Route::resource('users', UserController::class)->except(['show']);
+    });
 
     // ==========================================
     // MODUL STUDENTS (Sesuai Matrix: Admin CRUD, Teacher View)

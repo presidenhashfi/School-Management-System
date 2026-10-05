@@ -23,6 +23,7 @@
     ];
     if ($authUser->role === 'admin') {
         $navItems[] = ['route' => 'teachers.index', 'match' => 'teachers.*', 'icon' => 'bi-person-workspace', 'label' => 'Guru'];
+        $navItems[] = ['route' => 'users.index', 'match' => 'users.*', 'icon' => 'bi-person-gear', 'label' => 'Akun'];
     }
     $initials = strtoupper(substr($authUser->username, 0, 2));
 @endphp
@@ -50,6 +51,7 @@
                 <div class="nav-user-name">{{ $authUser->username }}</div>
                 <div class="nav-user-role">{{ $authUser->role }}</div>
             </div>
+            <a href="{{ route('password.edit') }}" class="icon-btn" aria-label="Ganti password" title="Ganti password"><i class="bi bi-key" aria-hidden="true"></i></a>
             <form action="{{ route('logout') }}" method="POST" class="m-0">
                 @csrf
                 <button type="submit" class="icon-btn logout" aria-label="Keluar" title="Keluar">
@@ -78,6 +80,7 @@
             <div class="nav-user-name">{{ $authUser->username }}</div>
             <div class="nav-user-role">{{ $authUser->role }}</div>
         </div>
+        <a href="{{ route('password.edit') }}" class="btn-ui btn-ui-ghost"><i class="bi bi-key" aria-hidden="true"></i> Password</a>
         <form action="{{ route('logout') }}" method="POST" class="m-0">
             @csrf
             <button type="submit" class="btn-ui btn-ui-ghost"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Keluar</button>
