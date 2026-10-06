@@ -43,9 +43,19 @@
             </div>
             <div class="sf-fields">
                 <div class="sf-field">
-                    <label for="class_name"><i class="bi bi-building"></i> Nama Kelas <span class="req">*</span></label>
-                    <input type="text" name="class_name" id="class_name" placeholder="Contoh: X IPA 1, XI IPS 2..." value="{{ old('class_name') }}" autofocus required>
-                    @error('class_name')<div class="sf-error"><i class="bi bi-exclamation-circle-fill"></i> {{ $message }}</div>@enderror
+                    <label for="grade"><i class="bi bi-layers"></i> Tingkat <span class="req">*</span></label>
+                    <select name="grade" id="grade" required autofocus>
+                        <option value="">— Pilih tingkat —</option>
+                        @foreach(\App\Models\Classes::GRADES as $g)
+                            <option value="{{ $g }}" @selected(old('grade') === $g)>Kelas {{ $g }}</option>
+                        @endforeach
+                    </select>
+                    @error('grade')<div class="sf-error"><i class="bi bi-exclamation-circle-fill"></i> {{ $message }}</div>@enderror
+                </div>
+                <div class="sf-field">
+                    <label for="section"><i class="bi bi-building"></i> Rombel <span class="req">*</span></label>
+                    <input type="text" name="section" id="section" maxlength="20" placeholder="Contoh: A, B, C" value="{{ old('section') }}" required>
+                    @error('section')<div class="sf-error"><i class="bi bi-exclamation-circle-fill"></i> {{ $message }}</div>@enderror
                 </div>
                 <div class="sf-field">
                     <label for="academic_year"><i class="bi bi-calendar3"></i> Tahun Ajaran <span class="req">*</span></label>
@@ -73,6 +83,7 @@
                     @error('homeroom_teacher_id')<div class="sf-error"><i class="bi bi-exclamation-circle-fill"></i> {{ $message }}</div>@enderror
                 </div>
             </div>
+
             <div class="sf-footer">
                 <button type="submit" class="btn-sf btn-sf-submit" id="sfBtn"><i class="bi bi-floppy-fill"></i> Simpan Data Kelas</button>
                 <a href="{{ route('classes.index') }}" class="btn-sf-cancel"><i class="bi bi-arrow-left"></i> Batal</a>

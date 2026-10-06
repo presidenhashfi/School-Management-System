@@ -23,6 +23,7 @@ class SubjectController extends Controller
         $validated = $request->validate([
             'subject_code' => 'required|string|max:10|unique:tbl_subjects,subject_code',
             'subject_name' => 'required|string|max:100',
+            'grade' => ['required', \Illuminate\Validation\Rule::in(\App\Models\Classes::GRADES)],
             'credits' => 'required|integer',
         ]);
 
@@ -41,6 +42,7 @@ class SubjectController extends Controller
         $validated = $request->validate([
             'subject_code' => 'required|string|max:10|unique:tbl_subjects,subject_code,' . $id . ',subject_id',
             'subject_name' => 'required|string|max:100',
+            'grade' => ['required', \Illuminate\Validation\Rule::in(\App\Models\Classes::GRADES)],
             'credits' => 'required|integer',
         ]);
 

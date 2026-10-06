@@ -41,6 +41,7 @@
                     <th>#</th>
                     <th>Kode</th>
                     <th>Nama Mata Pelajaran</th>
+                    <th class="t-center">Tingkat</th>
                     <th class="t-center">SKS</th>
                     @if($isAdmin)<th class="t-right">Aksi</th>@endif
                 </tr>
@@ -56,6 +57,7 @@
                                 <span class="cell-name">{{ $subject->subject_name }}</span>
                             </div>
                         </td>
+                        <td class="t-center" data-label="Tingkat">@if($subject->grade)<span class="tag">{{ $subject->grade }}</span>@else<span class="muted-val">Belum diatur</span>@endif</td>
                         <td class="t-center" data-label="SKS"><span class="tag tag-accent">{{ number_format($subject->credits, 0, ',', '.') }} SKS</span></td>
                         @if($isAdmin)
                             <td class="cell-actions t-right">
@@ -71,7 +73,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="{{ $isAdmin ? 5 : 4 }}" class="empty-cell p-0">
+                        <td colspan="{{ $isAdmin ? 6 : 5 }}" class="empty-cell p-0">
                             <div class="empty">
                                 <div class="empty-icon"><i class="bi bi-journal-text" aria-hidden="true"></i></div>
                                 <h3>Belum ada mata pelajaran</h3>

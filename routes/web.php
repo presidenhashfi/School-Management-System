@@ -10,6 +10,8 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\PromotionController;
 
 // Route untuk Guest (Belum Login)
 Route::middleware('guest')->group(function () {
@@ -50,7 +52,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/classes', [ClassesController::class, 'index'])->middleware('role:admin,teacher,student')->name('classes.index');
     Route::middleware('role:admin')->group(function () {
         Route::resource('classes', ClassesController::class)->except(['index', 'show']);
+        Route::get('/promotion', [PromotionController::class, 'index'])->name('promotion.index');
+        Route::post('/promotion', [PromotionController::class, 'store'])->name('promotion.store');
     });
+    Route::get('/classes/{class}', [ClassesController::class, 'show'])->whereNumber('class')
+        ->middleware('role:admin,teacher,student')->name('classes.show');
 
     // ==========================================
     // MODUL SUBJECTS (Admin CRUD, Teacher View)
@@ -59,6 +65,20 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::resource('subjects', SubjectController::class)->except(['index', 'show']);
     });
+
+    // ==========================================
+    // MODUL SOAL / ASSIGNMENTS (Admin & Guru buat soal dengan RTE, Siswa upload jawaban PDF)
+    // ==========================================
+    Route::middleware('role:admin,teacher')->group(function () {
+        Route::resource('assignments', AssignmentController::class)->except(['index', 'show']);
+    });
+    Route::middleware('role:admin,teacher,student')->group(function () {
+        Route::get('/assignments', [AssignmentController::class, 'index'])->name('assignments.index');
+        Route::get('/assignments/{assignment}', [AssignmentController::class, 'show'])->whereNumber('assignment')->name('assignments.show');
+        Route::get('/submissions/{submission}/download', [AssignmentController::class, 'download'])->name('submissions.download');
+    });
+    Route::post('/assignments/{assignment}/submit', [AssignmentController::class, 'submit'])
+        ->middleware('role:student')->name('assignments.submit');
 
     // ==========================================
     // MODUL TEACHERS (Hanya Admin)

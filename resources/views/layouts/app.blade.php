@@ -11,6 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="{{ asset('css/ui.css') }}?v={{ @filemtime(public_path('css/ui.css')) }}" rel="stylesheet">
+    @stack('styles')
 </head>
 <body>
 @php
@@ -18,8 +19,9 @@
     $navItems = [
         ['route' => 'dashboard',      'match' => 'dashboard',  'icon' => 'bi-grid-1x2',   'label' => 'Dashboard'],
         ['route' => 'students.index', 'match' => 'students.*', 'icon' => 'bi-people',     'label' => 'Siswa'],
-        ['route' => 'classes.index',  'match' => 'classes.*',  'icon' => 'bi-building',   'label' => 'Kelas'],
+        ['route' => 'classes.index',  'match' => ['classes.*', 'assignments.*', 'promotion.*'],  'icon' => 'bi-building',   'label' => 'Kelas'],
         ['route' => 'subjects.index', 'match' => 'subjects.*', 'icon' => 'bi-journal-text', 'label' => 'Mapel'],
+
     ];
     if ($authUser->role === 'admin') {
         $navItems[] = ['route' => 'teachers.index', 'match' => 'teachers.*', 'icon' => 'bi-person-workspace', 'label' => 'Guru'];

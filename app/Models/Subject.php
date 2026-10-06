@@ -13,5 +13,5 @@ class Subject extends Model
     protected $primaryKey = 'subject_id';
     
     // Tambahkan baris ini:
-    protected $fillable = ['subject_code', 'subject_name', 'credits', 'archived'];
+    protected $fillable = ['subject_code', 'subject_name', 'grade', 'credits', 'archived'];
 }

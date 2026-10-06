@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\ActivityLog;
+use App\Models\Assignment;
 use App\Models\Classes;
 use App\Models\Student;
 use App\Models\Subject;
@@ -54,6 +55,7 @@ class AppServiceProvider extends ServiceProvider
             Teacher::class => ['guru',       fn ($m) => $m->full_name ?? $m->getKey()],
             Classes::class => ['kelas',      fn ($m) => $m->class_name ?? $m->getKey()],
             Subject::class => ['mata pelajaran', fn ($m) => $m->subject_name ?? $m->getKey()],
+            Assignment::class => ['soal', fn ($m) => $m->title ?? $m->getKey()],
         ];
 
         foreach ($labels as $class => [$noun, $name]) {

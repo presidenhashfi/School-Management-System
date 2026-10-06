@@ -64,6 +64,16 @@
                         @error('credits')<div class="sf-error"><i class="bi bi-exclamation-circle-fill"></i> {{ $message }}</div>@enderror
                     </div>
                     <div class="sf-field" style="grid-column:1/-1;">
+                        <label for="grade"><i class="bi bi-layers"></i> Tingkat Kelas <span class="req">*</span></label>
+                        <select name="grade" id="grade" required>
+                            <option value="">— Pilih tingkat —</option>
+                            @foreach(\App\Models\Classes::GRADES as $g)
+                                <option value="{{ $g }}" @selected(old('grade', $subject->grade) === $g)>Kelas {{ $g }}</option>
+                            @endforeach
+                        </select>
+                        @error('grade')<div class="sf-error"><i class="bi bi-exclamation-circle-fill"></i> {{ $message }}</div>@enderror
+                    </div>
+                    <div class="sf-field" style="grid-column:1/-1;">
                         <label for="subject_name"><i class="bi bi-journal-text"></i> Nama Mata Pelajaran <span class="req">*</span></label>
                         <input type="text" name="subject_name" id="subject_name" placeholder="Masukkan nama mata pelajaran lengkap..." value="{{ old('subject_name', $subject->subject_name) }}" required>
                         @error('subject_name')<div class="sf-error"><i class="bi bi-exclamation-circle-fill"></i> {{ $message }}</div>@enderror
