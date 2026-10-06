@@ -63,7 +63,11 @@
                         <td data-label="Kelas">
                             @if($student->class_name)
                                 <span class="tag tag-accent">{{ $student->class_name }}</span>
-                                @if($student->status === 'graduated')<span class="tag">Lulus</span>@endif
+                                @if($student->status === 'graduated')
+                                    <span class="tag" style="background:#faf5ff;color:#7c3aed;border-color:#e9d5ff">
+                                        <i class="bi bi-mortarboard-fill me-1"></i> Lulus
+                                    </span>
+                                @endif
                             @else
                                 <span class="muted-val">Belum ada kelas</span>
                             @endif
